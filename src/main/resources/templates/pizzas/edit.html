@@ -2,6 +2,9 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/resources :: head('Edit pizza')"></head>
 <body>
+<header>
+    <nav th:replace="fragments/navbar :: topNavbar('edit')"></nav>
+</header>
     <div class="container">
         <h1 th:text="|Edit ${pizza.name}|"></h1>
 
