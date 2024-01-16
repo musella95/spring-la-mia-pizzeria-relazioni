@@ -25,10 +25,11 @@
                 <a class="btn btn-primary" th:href="@{/pizzas/show/{id}(id=${pizza.id})}"><i class="fa-solid fa-eye"></i></a>
                 <a class="btn btn-primary" th:href="@{/pizzas/edit/{id}(id=${pizza.id})}"><i class="fa-solid fa-pencil"></i></a>
                 <form
-                        th:action="@{/pizzas/edit/{id}(id=${pizza.id})}"
+                        th:action="@{/pizzas/delete/{id}(id=${pizza.id})}"
                         method="post"
                         onsubmit="return confirm('Are you sure?')"
                 >
+                    <div class="alert alert-info" th:if="${pizzaList.size() == 0}">There are no pizzas</div>
                     <button type="submit" class="btn btn-primary">Delete</button>
                 </form>
             </td>

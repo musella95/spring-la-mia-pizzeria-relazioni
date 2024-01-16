@@ -105,11 +105,12 @@ public class PizzaController {
     public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes){
         Optional<Pizza> result = pizzaRepository.findById(id);
         if (result.isPresent()){
+            System.out.println("pizza trovata");
             pizzaRepository.deleteById(id);
             redirectAttributes.addFlashAttribute("redirectMessage","Pizza"+ result.get().getName() + "deleted!");
             return "redirect:/pizzas";
         }else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Pizza with id " + id + " not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Pizza with di " + id + " not found");
         }
     }
 }
