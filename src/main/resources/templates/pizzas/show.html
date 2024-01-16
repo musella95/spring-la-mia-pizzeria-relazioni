@@ -14,7 +14,32 @@
         </div>
     </div>
 </div>
-
+    <section class="mt-5">
+        <h3>
+            <span>Offers</span>
+            <!-- /borrowings/create?bookId=2 -->
+            <a th:href="@{/offers/create(pizzaId=${pizza.id})}" class="btn btn-primary">+</a>
+        </h3>
+        <table class="table" th:if="${pizza.offers.size() > 0}">
+            <thead>
+            <tr>
+                <th>Start Date</th>
+                <th>Expire Date</th>
+                <th>Title</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="ofr : ${pizza.offers}">
+                <td th:text="${ofr.startDate}"></td>
+                <td th:text="${ofr.expireDate}"></td>
+                <td th:text="${ofr.title}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="alert alert-info" th:if="${pizza.offers.size() == 0}">
+            This pizza has not discount yet
+        </div>
+    </section>
 <th:block th:replace="fragments/resources :: script"></th:block>
 </body>
 </html>
