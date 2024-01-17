@@ -56,4 +56,16 @@ public class OfferController {
         Offer updateOffer = offerRepository.save(formOffer);
         return "redirect:/pizzas/show/" + updateOffer.getPizza().getId();
     }
+
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable Integer id) {
+        Optional<Offer> result = offerRepository.findById(id);
+        if (result.isPresent()) {
+            Offer offerToDelete = result.get();
+            offerRepository.delete(offerToDelete);
+            return "redirect:/pizzas/show/" + offerToDelete.getPizza().getId();
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Offer with id " + id + " not found");
+        }
+    }
 }

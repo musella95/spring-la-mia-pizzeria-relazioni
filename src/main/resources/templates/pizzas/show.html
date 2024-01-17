@@ -2,44 +2,58 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/resources :: head('Pizza details')"></head>
 <body>
-    <h1 class="text-center mt-3">Pizza Details</h1>
-<div class="container text-center d-flex justify-content-center">
-    <div class="card mt-5" style="width: 18rem;">
-        <img th:src="${pizza.imgUrl}" class="card-img-top" alt="pizza">
-        <div class="card-body text-start">
-            <h5 class="card-title" th:text="${pizza.name}"></h5>
-            <p class="card-text" th:text="${pizza.description}"></p>
-            <p class="card-text" th:text="|Price: ${pizza.price} &euro;|"></p>
-            <a th:href="@{/pizzas}" class="btn btn-primary">Back to pizzas</a>
-        </div>
+<h1 class="text-center mt-3">Pizza <span th:text="${pizza.name}"></span> Details</h1>
+<main>
+    <div class="container">
+        <section>
+            <div class="card mt-5 mx-auto" style="width: 18rem;">
+                <img th:src="${pizza.imgUrl}" class="card-img-top" alt="pizza">
+                <div class="card-body text-start">
+                    <h5 class="card-title" th:text="${pizza.name}"></h5>
+                    <p class="card-text" th:text="${pizza.description}"></p>
+                    <p class="card-text" th:text="|Price: ${pizza.price} &euro;|"></p>
+                    <a th:href="@{/pizzas}" class="btn btn-primary">Back to pizzas</a>
+                </div>
+            </div>
+        </section>
+        <section class="mt-5">
+            <h3>
+                <span>Discount</span>
+                <a th:href="@{/offers/create(pizzaId=${pizza.id})}" class="btn btn-sm btn-primary"><i
+                        class="fa-solid fa-plus"></i></a>
+            </h3>
+            <table class="table" th:if="${pizza.offers.size() > 0}">
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Start Date</th>
+                    <th>Expire Date</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="offer : ${pizza.offer}">
+                    <td th:text="${offer.title}"></td>
+                    <td th:text="${offer.startDate}"></td>
+                    <td th:text="${offer.expireDate}"></td>
+                    <td class="d-flex justify-content-between">
+                        <a class="btn btn-primary" th:href="@{/offers/edit/{id}(id=${offer.id})}"><i
+                                class="fa-solid fa-pencil"></i></a>
+                        <form th:action="@{/offers/delete/{id}(id=${offer.id})}" method="post"
+                              onsubmit="return confirm('Are you sure, you want to delete this offer?')">
+                            <button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash"></i></button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="alert alert-info" th:if="${pizza.offers.size() == 0}">
+                This pizza has no discounts
+            </div>
+        </section>
     </div>
-</div>
-    <section class="mt-5">
-        <h3>
-            <span>Offers</span>
-            <!-- /borrowings/create?bookId=2 -->
-            <a th:href="@{/offers/create(pizzaId=${pizza.id})}" class="btn btn-primary">+</a>
-        </h3>
-        <table class="table" th:if="${pizza.offers.size() > 0}">
-            <thead>
-            <tr>
-                <th>Start Date</th>
-                <th>Expire Date</th>
-                <th>Title</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="ofr : ${pizza.offers}">
-                <td th:text="${ofr.startDate}"></td>
-                <td th:text="${ofr.expireDate}"></td>
-                <td th:text="${ofr.title}"></td>
-            </tr>
-            </tbody>
-        </table>
-        <div class="alert alert-info" th:if="${pizza.offers.size() == 0}">
-            This pizza has not discount yet
-        </div>
-    </section>
+</main>
+
 <th:block th:replace="fragments/resources :: script"></th:block>
 </body>
 </html>
