@@ -8,11 +8,20 @@
         <section>
             <div class="card mt-5 mx-auto" style="width: 18rem;">
                 <img th:src="${pizza.imgUrl}" class="card-img-top" alt="pizza">
-                <div class="card-body text-start">
+
+                <div class="card-body ">
                     <h5 class="card-title" th:text="${pizza.name}"></h5>
                     <p class="card-text" th:text="${pizza.description}"></p>
+                    <h5 class="card-title">Ingredients</h5>
+                </div>
+                <ul class="list-group list-group-flush" th:each="ing : ${pizza.ingredients}">
+                    <li class="list-group-item" th:text="${ing.name}"></li>
+                </ul>
+                <div class="card-body">
+                    <h5 class="card-title">Price</h5>
                     <p class="card-text" th:text="|Price: ${pizza.price} &euro;|"></p>
                     <a th:href="@{/pizzas}" class="btn btn-primary">Back to pizzas</a>
+                    <a th:href="@{/pizzas/edit/{id}(id=${pizza.id})}" class="btn btn-primary">Edit</a>
                 </div>
             </div>
         </section>

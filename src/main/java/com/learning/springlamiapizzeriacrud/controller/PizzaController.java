@@ -54,17 +54,19 @@ public class PizzaController {
     public String create(Model model) {
         Pizza pizza = new Pizza();
         model.addAttribute("pizza", pizza);
+        model.addAttribute("ingredientList", ingredientRepository.findAll());
         return "pizzas/create";
     }
 
     @PostMapping("/create")
-    public String store(@Valid @ModelAttribute("pizza") Pizza formPizza, BindingResult bindingResult) {
-        // Valido i dati di Pizza
+    public String store(@Valid @ModelAttribute("pizza") Pizza formPizza, BindingResult bindingResult, Model model) {
+        // Validazione dei dati della Pizza
         if (bindingResult.hasErrors()) {
-            // Se ci sono errori, ricarico il template del form senza cancellare i dati inseriti
+            // Se ci sono errori, ricarica il template del form senza cancellare i dati inseriti
+            model.addAttribute("ingredietsList", ingredientRepository.findAll());
             return "pizzas/create";
         } else {
-            // Altrimenti crea la pizza e mostra la view /show con la pizza appena creata
+            // Altrimenti crea la pizza e mostra la vista /show con la pizza appena creata
             Pizza savedPizza = pizzaRepository.save(formPizza);
             return "redirect:/pizzas/show/" + savedPizza.getId();
         }
@@ -81,7 +83,7 @@ public class PizzaController {
 
             // Lo passo come attributo del model
             model.addAttribute("pizza", result.get());
-
+            model.addAttribute("ingredientList", ingredientRepository.findAll());
             // Ritorno il template con il form di modifica
             return "pizzas/edit";
         } else {
