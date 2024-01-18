@@ -44,14 +44,28 @@ public class OfferController {
 
     @PostMapping("/create")
     public String storedOffer(Offer formOffer) {
+        //salvo in db
         Offer storedOffer = offerRepository.save(formOffer);
         return "redirect:/pizzas/show/" + storedOffer.getPizza().getId();
+    }
+
+    @GetMapping("/edit/{id}")///edit/{id}
+    public String edit(@PathVariable Integer id, Model model) {
+        Optional<Offer> result = offerRepository.findById(id);
+        if (result.isPresent()) {
+            Offer editOffer = result.get();
+            model.addAttribute("offer", editOffer);
+            return "offers/edit";
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Offer with id " + id + " not found");
+        }
+
     }
 
     @PostMapping("/edit/{id}")
     public String update(@PathVariable Integer id, @Valid @ModelAttribute("offer") Offer formOffer, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "discounts/edit";
+            return "offers/edit";
         }
         Offer updateOffer = offerRepository.save(formOffer);
         return "redirect:/pizzas/show/" + updateOffer.getPizza().getId();

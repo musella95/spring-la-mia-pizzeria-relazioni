@@ -18,7 +18,7 @@
         </section>
         <section class="mt-5">
             <h3>
-                <span>Discount</span>
+                <span>offer</span>
                 <a th:href="@{/offers/create(pizzaId=${pizza.id})}" class="btn btn-sm btn-primary"><i
                         class="fa-solid fa-plus"></i></a>
             </h3>
@@ -32,7 +32,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="offer : ${pizza.offer}">
+                <tr th:each="offer : ${pizza.offers}">
                     <td th:text="${offer.title}"></td>
                     <td th:text="${offer.startDate}"></td>
                     <td th:text="${offer.expireDate}"></td>
@@ -48,7 +48,7 @@
                 </tbody>
             </table>
             <div class="alert alert-info" th:if="${pizza.offers.size() == 0}">
-                This pizza has no discounts
+                This pizza has no offer
             </div>
         </section>
     </div>
