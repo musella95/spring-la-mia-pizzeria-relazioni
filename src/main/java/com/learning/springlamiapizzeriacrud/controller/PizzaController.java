@@ -1,6 +1,7 @@
 package com.learning.springlamiapizzeriacrud.controller;
 
 import com.learning.springlamiapizzeriacrud.model.Pizza;
+import com.learning.springlamiapizzeriacrud.repository.IngredientRepository;
 import com.learning.springlamiapizzeriacrud.repository.PizzaRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ public class PizzaController {
     // Aggiungo il repository come attributo e lo annoto come @Autowired
     @Autowired
     private PizzaRepository pizzaRepository;
+    @Autowired
+    private IngredientRepository ingredientRepository;
 
     // Metodo che mi mostra tutte le pizze
     @GetMapping
@@ -48,7 +51,7 @@ public class PizzaController {
 
     // Metodo che mi restituisce la view
     @GetMapping("/create")
-    public String create(Model model){
+    public String create(Model model) {
         Pizza pizza = new Pizza();
         model.addAttribute("pizza", pizza);
         return "pizzas/create";
@@ -101,15 +104,16 @@ public class PizzaController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Pizza with id " + id + " not found");
         }
     }
+
     @PostMapping("/delete/{id}")
-    public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes){
+    public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
         Optional<Pizza> result = pizzaRepository.findById(id);
-        if (result.isPresent()){
+        if (result.isPresent()) {
             System.out.println("pizza trovata");
             pizzaRepository.deleteById(id);
-            redirectAttributes.addFlashAttribute("redirectMessage","Pizza"+ result.get().getName() + "deleted!");
+            redirectAttributes.addFlashAttribute("redirectMessage", "Pizza" + result.get().getName() + "deleted!");
             return "redirect:/pizzas";
-        }else {
+        } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Pizza with di " + id + " not found");
         }
     }
